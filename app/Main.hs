@@ -1,9 +1,9 @@
 module Main where
 
+import Data.Char (digitToInt)
+
 main :: IO ()
 main = do
-  [a, b] <- ints
-  putStrLn (if even (a * b) then "Even" else "Odd")
-
-ints :: IO [Int]
-ints = map read . words <$> getLine
+  chars <- getLine
+  let nums = map digitToInt chars
+  print (sum nums)
