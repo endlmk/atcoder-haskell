@@ -1,9 +1,12 @@
 module Main where
 
-import Data.Char (digitToInt)
+f x = if even x then 1 + f (x `div` 2) else 0
+
+ints :: IO [Int]
+ints = map read . words <$> getLine
 
 main :: IO ()
 main = do
-  chars <- getLine
-  let nums = map digitToInt chars
-  print (sum nums)
+  n <- getLine
+  a <- ints
+  print $ minimum $ map f a
