@@ -3,15 +3,16 @@ module Main where
 ints :: IO [Int]
 ints = map read . words <$> getLine
 
+charToString :: Char -> String
+charToString c = [c]
+
+charToInteger :: Char -> Int
+charToInteger c = read (charToString c) :: Int
+
+digitsSum :: Int -> Int
+digitsSum x = sum (map charToInteger (show x))
+
 main :: IO ()
 main = do
-  a <- getLine
-  let anum = read a :: Integer
-  b <- getLine
-  let bnum = read b :: Integer
-  c <- getLine
-  let cnum = read c :: Integer
-  x <- getLine
-  let xnum = read x :: Integer
-  let pairs = [(na, nb, nc) | na <- [0 .. anum], nb <- [0 .. bnum], nc <- [0 .. cnum]]
-  print (sum (map (\(a1, b1, c1) -> if (500 * a1 + 100 * b1 + 50 * c1) == xnum then 1 else 0) pairs))
+  [n, a, b] <- ints
+  print (sum (map (\v -> let s = digitsSum v in if a <= s && s <= b then v else 0) [1 .. n]))
