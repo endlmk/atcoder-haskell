@@ -1,18 +1,15 @@
 module Main where
 
+import Data.List (sortBy, unfoldr)
+
 ints :: IO [Int]
 ints = map read . words <$> getLine
 
-charToString :: Char -> String
-charToString c = [c]
-
-charToInteger :: Char -> Int
-charToInteger c = read (charToString c) :: Int
-
-digitsSum :: Int -> Int
-digitsSum x = sum (map charToInteger (show x))
-
 main :: IO ()
 main = do
-  [n, a, b] <- ints
-  print (sum (map (\v -> let s = digitsSum v in if a <= s && s <= b then v else 0) [1 .. n]))
+  _ <- getLine
+  a <- ints
+  let ordered = sortBy (flip compare) a
+  let alice = sum [x | (x, i) <- zip ordered [1 ..], odd i]
+  let bob = sum [x | (x, i) <- zip ordered [1 ..], even i]
+  print (alice - bob)
