@@ -1,11 +1,18 @@
 module Main where
 
+import Data.List (stripPrefix)
+import Data.Maybe (listToMaybe, mapMaybe)
+
 ints :: IO [Int]
 ints = map read . words <$> getLine
 
+solve :: String -> Bool
+solve [] = True
+solve s = maybe False solve (listToMaybe (mapMaybe (`stripPrefix` s) revwords))
+  where
+    revwords = map reverse ["dream", "dreamer", "erase", "eraser"]
+
 main :: IO ()
 main = do
-  [n, y] <- ints
-  let ans = filter (\(m, g, s) -> m * 10000 + g * 5000 + s * 1000 == y) [(m, g, n - m - g) | m <- [0 .. n], g <- [0 .. n - m]]
-  let (m, g, s) = if null ans then (-1, -1, -1) else head ans
-  putStrLn (unwords (map show [m, g, s]))
+  s <- getLine
+  putStrLn (if solve (reverse s) then "YES" else "NO")
